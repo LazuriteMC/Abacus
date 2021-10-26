@@ -1,0 +1,29 @@
+plugins {
+    id 'groovy'
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+}
+
+group 'dev.lazurite'
+version abacus_version
+
+dependencies {
+    implementation localGroovy()
+}
+
+gradlePlugin {
+    plugins {
+        abacus {
+            id = 'dev.lazurite.abacus'
+            implementationClass = 'dev.lazurite.abacus.AbacusPlugin'
+        }
+    }
+}
+
+publishing {
+    publications {
+        abacus(MavenPublication) {
+            artifact jar
+        }
+    }
+}
