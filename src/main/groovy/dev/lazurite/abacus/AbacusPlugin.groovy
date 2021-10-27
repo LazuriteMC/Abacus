@@ -1,17 +1,19 @@
 package dev.lazurite.abacus
 
 import dev.lazurite.abacus.project.AbacusProjectPlugin
+import dev.lazurite.abacus.settings.AbacusSettingsPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.PluginAware
+import org.gradle.api.initialization.Settings
 
-final class AbacusPlugin implements Plugin<PluginAware> {
+abstract class AbacusPlugin<T> implements Plugin<T> {
 
-    // Was used to delegate apply to either a gradle, settings, or project object.
-    // Keeping here because I'm still testing with that.
+    protected static final def ABACUS_PROPERTIES = new HashMap<String, String>()
+
     @Override
-    void apply(PluginAware pluginAware) {
-        new AbacusProjectPlugin().apply(pluginAware as Project);
+    void apply(T t) {
+        if (t instanceof Settings) new AbacusSettingsPlugin().apply(t as Settings);
+        else if (t instanceof Project) new AbacusProjectPlugin().apply(t as Project);
     }
 
 }
